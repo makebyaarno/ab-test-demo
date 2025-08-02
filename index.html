@@ -3,26 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <title>A/B тест формы заявки</title>
-  <style>
-    form { display: none; }
-  </style>
   <script>
-    const COUNTER_ID = 103573127; // твой Яндекс.Метрика ID
+    // Рандомный выбор варианта A или B
     const variant = Math.random() < 0.5 ? 'A' : 'B';
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // Показываем нужную форму
-      document.getElementById('form' + variant).style.display = 'block';
-      console.log('Показан вариант:', variant);
-    });
-
     function sendGoal(goalName) {
+      console.log("Отправка цели:", goalName);
       if (window.ym) {
-        ym(COUNTER_ID, 'reachGoal', goalName, function () {
-          console.log('Цель достигнута:', goalName);
-        });
-      } else {
-        console.log('Метрика не загружена, цель:', goalName);
+        ym(103573127, 'reachGoal', goalName); // Заменить на свой ID при необходимости
       }
     }
 
@@ -30,52 +18,60 @@
       e.preventDefault();
       sendGoal('formA_submit');
       alert('Форма A отправлена!');
-      // Реальная отправка формы после цели
-      e.target.submit();
     }
 
     function onSubmitB(e) {
       e.preventDefault();
       sendGoal('formB_submit');
       alert('Форма B отправлена!');
-      // Реальная отправка формы после цели
-      e.target.submit();
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (variant === 'A') {
+        document.getElementById('formA').style.display = 'block';
+        sendGoal('formA_view');
+      } else {
+        document.getElementById('formB').style.display = 'block';
+        sendGoal('formB_view');
+      }
+    });
   </script>
 </head>
 <body>
   <h1>A/B тест формы заявки</h1>
 
-  <form id="formA" action="#" method="POST" onsubmit="onSubmitA(event)">
+  <!-- Вариант A -->
+  <form id="formA" style="display:none;" onsubmit="onSubmitA(event)">
     <h2>Вариант A</h2>
-    <input type="text" name="name" placeholder="Ваше имя" required />
-    <input type="tel" name="phone" placeholder="Телефон" required />
+    <input type="text" placeholder="Ваше имя" required />
+    <input type="tel" placeholder="Телефон" required />
     <button type="submit">Отправить заявку</button>
   </form>
 
-  <form id="formB" action="#" method="POST" onsubmit="onSubmitB(event)">
+  <!-- Вариант B -->
+  <form id="formB" style="display:none;" onsubmit="onSubmitB(event)">
     <h2>Вариант B</h2>
-    <input type="email" name="email" placeholder="Ваш email" required />
-    <input type="text" name="comment" placeholder="Комментарий" />
+    <input type="email" placeholder="Ваш email" required />
+    <input type="text" placeholder="Комментарий" />
     <button type="submit">Отправить заявку</button>
   </form>
 
-  <!-- Код Яндекс.Метрики -->
+  <!-- Яндекс.Метрика -->
   <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
-      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();
-      for (var j=0; j<document.scripts.length; j++) {
-        if(document.scripts[j].src===r){return;}
-      }
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) { return; }
+        }
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    ym(COUNTER_ID, "init", {
-      clickmap:true,
-      trackLinks:true,
-      accurateTrackBounce:true,
-      webvisor:true
+    ym(103573127, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
     });
   </script>
   <noscript><div><img src="https://mc.yandex.ru/watch/103573127" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
