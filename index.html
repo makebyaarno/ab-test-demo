@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>A/B тест формы заявки</title>
+  <script>
+    // Рандомный выбор варианта A или B
+    const variant = Math.random() < 0.5 ? 'A' : 'B';
+    document.addEventListener('DOMContentLoaded', () => {
+      if (variant === 'A') {
+        document.getElementById('formA').style.display = 'block';
+      } else {
+        document.getElementById('formB').style.display = 'block';
+      }
+    });
+
+    // Отправка событий в Метрику при отправке формы
+    function sendGoal(goalName) {
+      if (window.ym) {
+        ym(YOUR_COUNTER_ID, 'reachGoal', goalName);
+      }
+    }
+
+    function onSubmitA(e) {
+      e.preventDefault();
+      sendGoal('formA_submit');
+      alert('Форма A отправлена!');
+      // Тут может быть реальный сабмит формы
+    }
+    function onSubmitB(e) {
+      e.preventDefault();
+      sendGoal('formB_submit');
+      alert('Форма B отправлена!');
+      // Тут может быть реальный сабмит формы
+    }
+  </script>
+</head>
+<body>
+  <h1>A/B тест формы заявки</h1>
+
+  <form id="formA" style="display:none;" onsubmit="onSubmitA(event)">
+    <h2>Вариант A</h2>
+    <input type="text" placeholder="Ваше имя" required />
+    <input type="tel" placeholder="Телефон" required />
+    <button type="submit">Отправить заявку</button>
+  </form>
+
+  <form id="formB" style="display:none;" onsubmit="onSubmitB(event)">
+    <h2>Вариант B</h2>
+    <input type="email" placeholder="Ваш email" required />
+    <input type="text" placeholder="Комментарий" />
+    <button type="submit">Отправить заявку</button>
+  </form>
+
+  <!-- Вставь сюда код Яндекс.Метрики, например: -->
+  <!--
+  <script type="text/javascript" >
+    (function(m,e,t,r,i,k,a){ m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date(); k=e.createElement(t), a=e.getElementsByTagName(t)[0], k.async=1, k.src=r, a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(YOUR_COUNTER_ID, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/YOUR_COUNTER_ID" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  -->
+
+</body>
+</html>
